@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mem.h"
+#include "config.h"
 
 int
 main ()
