@@ -58,9 +58,9 @@ void
 memPP (const int mem)
 {
         if (mem<1024)
-                printf("%dK", mem);
+                printf("%dK ", mem);
         else if (mem<1024*1024)
-                printf("%.1fM", (float)mem / 1024);
+                printf("%.1fM ", (float)mem / 1024);
         else
-                printf("%.1fG", (float)mem / (1024*1024));
+                printf("%.1fG ", (float)mem / (1024*1024));
 }
