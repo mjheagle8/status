@@ -9,6 +9,9 @@ OBJ = $(SRC:.c=.o)
 
 all: $(OUT)
 
+tags: $(SRC)
+	ctags *.c *.h
+
 .c.o:
 	$(CC) -c $(CFLAGS) $<
 

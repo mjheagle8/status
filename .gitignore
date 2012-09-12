@@ -1,3 +1,4 @@
 status
 *.o
 config.h
+tags
