@@ -6,6 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * memused
+ * determine the amount of memory in use
+ * by reading /proc/meminfo
+ */
 int
 memused()
 {
@@ -44,6 +49,11 @@ memused()
         return mem;
 }
 
+/**
+ * memPP
+ * pretty-print the memory used
+ * mem - memory used in KB
+ */
 void
 memPP (const int mem)
 {
