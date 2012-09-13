@@ -24,8 +24,9 @@ main ()
         while (1)
         {
                 /* get cpu usage */
-                const float cpu = cpuperc();
-                printf("%0.1f ", cpu);
+                float perc[NCPUS];
+                if (cpuperc(perc))
+                        cpuPP(perc);
 
                 /* get memory */
                 const int mem = memused();

@@ -2,7 +2,7 @@ OUT 	= status
 
 #variables
 CC = gcc
-CFLAGS = -Wall -g -Wextra -O2
+CFLAGS = -Wall -g -Wextra
 
 SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)

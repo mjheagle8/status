@@ -27,22 +27,21 @@ static cpustat *parse_cpu_stat_line(FILE *fd);
 /**
  * cpuperc
  * get the percentage of the cpu that is being used
+ * perc - the array to store the percentages in
  */
-float
-cpuperc()
+bool
+cpuperc(float perc[NCPUS])
 {
-        float ret = -2;
         short i;
         static cpustat *laststat[NCPUS];
         static bool first = true;
         cpustat *thisstat[NCPUS];
         char buffer[LINELENGTH];
-        float perc[NCPUS];
 
         /* open stat file */
         FILE *fd = fopen("/proc/stat", "r");
         if (!fd)
-                return -1;
+                return false;
 
         /* read relevant statistics from file */
         fgets(buffer, LINELENGTH, fd); /* skip first line */
@@ -60,7 +59,6 @@ cpuperc()
                         int idle = thisstat[i]->idle - laststat[i]->idle;
                         int busy = thisstat[i]->busy - laststat[i]->busy;
                         perc[i] = 100*(float)busy/((float)idle + (float)busy);
-                        printf("perc: %0.1f\n", perc[i]);
                         free(laststat[i]);
                 }
         }
@@ -73,9 +71,9 @@ cpuperc()
         if (first)
         {
                 first = false;
-                return -1;
+                return false;
         }
-        return ret;
+        return true;
 }
 
 /**
@@ -101,4 +99,22 @@ parse_cpu_stat_line(FILE *fd)
         this->busy = user + usernice + system + irq + softirq + steal + guest;
 
         return this;
+}
+
+/**
+ * cpuPP
+ * pretty print the cpu percentage
+ * stat - the array of cpu percentages
+ */
+void
+cpuPP(const float *stat)
+{
+        int i;
+        for (i=0; i<NCPUS; i++)
+        {
+                if (i>0)
+                        printf("/");
+                printf("%0.1f%%", stat[i]);
+        }
+        printf(" :: ");
 }

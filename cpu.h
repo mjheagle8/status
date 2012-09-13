@@ -6,6 +6,7 @@
 #ifndef _STATUS_CPU_H
 #define _STATUS_CPU_H
 
-float cpuperc();
+float *cpuperc();
+void cpuPP(const float *);
 
 #endif
