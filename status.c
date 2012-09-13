@@ -64,4 +64,5 @@ datePP()
         strftime(timestr, TIMELENGTH, "%a %b %d", now);
 
         printf("%s", timestr);
+        free(timestr);
 }
