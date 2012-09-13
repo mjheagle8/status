@@ -58,7 +58,10 @@ cpuperc(float perc[NCPUS])
                 {
                         int idle = thisstat[i]->idle - laststat[i]->idle;
                         int busy = thisstat[i]->busy - laststat[i]->busy;
-                        perc[i] = 100*(float)busy/((float)idle + (float)busy);
+                        if (!idle && !busy)
+                                perc[i] = 0;
+                        else
+                                perc[i] = 100*(float)busy/((float)idle + (float)busy);
                         free(laststat[i]);
                 }
         }
