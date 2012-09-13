@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include "cpu.h"
 #include "mem.h"
 #include "config.h"
 
@@ -22,6 +23,10 @@ main ()
 {
         while (1)
         {
+                /* get cpu usage */
+                const float cpu = cpuperc();
+                printf("%0.1f ", cpu);
+
                 /* get memory */
                 const int mem = memused();
                 memPP(mem);
