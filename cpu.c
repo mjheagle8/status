@@ -17,12 +17,12 @@
  */
 typedef struct _cpustat
 {
-        unsigned int idle;
-        unsigned int busy;
+        unsigned long int idle;
+        unsigned long int busy;
 } cpustat;
 
 /* local functions */
-static cpustat *parse_cpu_stat_line(const char *);
+static cpustat *parse_cpu_stat_line(FILE *fd);
 
 /**
  * cpuperc
@@ -36,6 +36,8 @@ cpuperc()
         static cpustat *laststat[NCPUS];
         static bool first = true;
         cpustat *thisstat[NCPUS];
+        char buffer[LINELENGTH];
+        float perc[NCPUS];
 
         /* open stat file */
         FILE *fd = fopen("/proc/stat", "r");
@@ -43,28 +45,29 @@ cpuperc()
                 return -1;
 
         /* read relevant statistics from file */
-        for (i=-1; i<NCPUS; i++)
-        {
-                char *line = calloc(LINELENGTH, sizeof(char));
-                fgets(line, LINELENGTH, fd);
-                printf("%s", line);
-                if (i == -1 && NCPUS == 1)
-                {
-                        break;
-                }
-        }
+        fgets(buffer, LINELENGTH, fd); /* skip first line */
+        for (i=0; i<NCPUS; i++)
+                thisstat[i] = parse_cpu_stat_line(fd);
 
         /* close stat file */
         fclose(fd);
 
-        /* compute use percentages */
-
-        /* clean up */
+        /* compute percentages */
         if (!first)
         {
                 for (i=0; i<NCPUS; i++)
+                {
+                        int idle = thisstat[i]->idle - laststat[i]->idle;
+                        int busy = thisstat[i]->busy - laststat[i]->busy;
+                        perc[i] = 100*(float)busy/((float)idle + (float)busy);
+                        printf("perc: %0.1f\n", perc[i]);
                         free(laststat[i]);
+                }
         }
+
+        /* copy thisstat into laststat */
+        for (i=0; i<NCPUS; i++)
+                laststat[i] = thisstat[i];
 
         /* return */
         if (first)
@@ -77,8 +80,25 @@ cpuperc()
 
 /**
  * parse_cpu_stat_line
+ * fd - the file handle for /proc/stat
  */
 static cpustat *
-parse_cpu_stat_line(const char *line)
+parse_cpu_stat_line(FILE *fd)
 {
+        unsigned long int user, usernice, system, idle, iowait, irq, softirq,
+                     steal, guest;
+        int ret;
+        static const char *format = "%*s %Ld %Ld %Ld %Ld %Ld %Ld %Ld %Ld %Ld %*s\n";
+
+        /* run fscanf */
+        ret = fscanf(fd, format, &user, &usernice, &system, &idle, &iowait,
+                        &irq, &softirq, &steal, &guest);
+        if (ret != 9)
+                return 0;
+
+        cpustat *this = calloc(1, sizeof(cpustat));
+        this->idle = idle + iowait;
+        this->busy = user + usernice + system + irq + softirq + steal + guest;
+
+        return this;
 }
