@@ -89,7 +89,7 @@ parse_cpu_stat_line(FILE *fd)
         unsigned long int user, usernice, system, idle, iowait, irq, softirq,
                      steal, guest;
         int ret;
-        static const char *format = "%*s %Ld %Ld %Ld %Ld %Ld %Ld %Ld %Ld %Ld %*s\n";
+        static const char *format = "%*s %ld %ld %ld %ld %ld %ld %ld %ld %ld %*s\n";
 
         /* run fscanf */
         ret = fscanf(fd, format, &user, &usernice, &system, &idle, &iowait,
