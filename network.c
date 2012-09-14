@@ -10,6 +10,7 @@
 
 /* local functions */
 unsigned long long int read_bytes(const char *);
+void print_data_rate(unsigned long long int);
 
 /**
  * if_up
@@ -39,10 +40,43 @@ if_up()
         /* done */
         fclose(fd);
 
-        /* debug */
-        printf("d: %Ld %Ld\n", download_bytes(), transmit_bytes());
-
         return ret;
+}
+
+/**
+ * print_data_rate
+ * pretty print a data rate with units
+ * br - bytes
+ */
+void
+print_data_rate(unsigned long long int br)
+{
+        printf("%Ld", 100000*br/INTERVAL);
+}
+
+/**
+ * print_data_rates
+ * rx - received bytes
+ * tx - transmit bytes
+ */
+void
+print_data_rates(unsigned long long int rx, unsigned long long int tx)
+{
+        if (rx)
+        {
+                printf("d:");
+                print_data_rate(rx);
+                if (tx)
+                        printf("/");
+        }
+        if (tx)
+        {
+                printf("u:");
+                print_data_rate(tx);
+        }
+
+        if (rx || tx)
+                printf(" ");
 }
 
 /**

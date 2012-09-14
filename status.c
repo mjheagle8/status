@@ -24,6 +24,16 @@ main ()
 {
         while (1)
         {
+                /* get network status */
+                if (if_up())
+                {
+                        unsigned long long int tx = transmit_bytes();
+                        unsigned long long int rx = download_bytes();
+                        print_data_rates(rx, tx);
+                        if (rx || tx)
+                                delimiter();
+                }
+
                 /* get cpu usage */
                 float perc[NCPUS];
                 if (cpuperc(perc))
