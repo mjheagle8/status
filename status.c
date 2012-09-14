@@ -20,8 +20,9 @@
 void datePP();
 
 int
-main ()
+main()
 {
+        /* main loop */
         while (1)
         {
                 /* get network status */
@@ -48,8 +49,9 @@ main ()
                 datePP();
 
                 /* wait for next iteration */
-                printf("\n");
+                fflush(stdout);
                 usleep(INTERVAL);
+                printf("\n");
         }
 
         return 0;
