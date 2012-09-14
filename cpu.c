@@ -117,7 +117,10 @@ cpuPP(const float *stat)
         {
                 if (i>0)
                         printf("/");
-                printf("%0.1f%%", stat[i]);
+                if (stat[i]<10)
+                        printf("%0.2f%%", stat[i]);
+                else
+                        printf("%0.1f%%", stat[i]);
         }
         printf(" :: ");
 }
