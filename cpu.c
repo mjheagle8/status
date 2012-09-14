@@ -41,7 +41,10 @@ cpuperc(float perc[NCPUS])
         /* open stat file */
         FILE *fd = fopen("/proc/stat", "r");
         if (!fd)
+        {
+                fprintf(stderr, "failed to open %s\n", "/proc/stat");
                 return false;
+        }
 
         /* read relevant statistics from file */
         fgets(buffer, LINELENGTH, fd); /* skip first line */
