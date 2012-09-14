@@ -86,6 +86,7 @@ print_data_rates(unsigned long long int rx, unsigned long long int tx)
 unsigned long long int
 transmit_bytes()
 {
+        static bool first = true;
         int ret = 0;
 
         /* interface rx_bytes file */
@@ -104,6 +105,13 @@ transmit_bytes()
         ret = this_bytes - last_bytes;
         last_bytes = this_bytes;
 
+        /* dont print initial data */
+        if (first)
+        {
+                first = false;
+                return 0;
+        }
+
         return ret;
 }
 
@@ -114,6 +122,7 @@ transmit_bytes()
 unsigned long long int
 download_bytes()
 {
+        static bool first = true;
         int ret = 0;
 
         /* interface rx_bytes file */
@@ -131,6 +140,13 @@ download_bytes()
         /* done */
         ret = this_bytes - last_bytes;
         last_bytes = this_bytes;
+
+        /* dont print initial data */
+        if (first)
+        {
+                first = false;
+                return 0;
+        }
 
         return ret;
 }
