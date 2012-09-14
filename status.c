@@ -73,7 +73,7 @@ datePP()
 
         /* convert thte time to a formatted string */
         timestr = malloc(TIMELENGTH*sizeof(char));
-        strftime(timestr, TIMELENGTH, "%H:%M:%S %a %b %d", now);
+        strftime(timestr, TIMELENGTH, TIMEFMT, now);
 
         printf("%s", timestr);
         free(timestr);
