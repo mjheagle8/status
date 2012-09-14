@@ -40,7 +40,35 @@ if_up()
         fclose(fd);
 
         /* debug */
-        printf("d: %Ld\n", download_bytes());
+        printf("d: %Ld %Ld\n", download_bytes(), transmit_bytes());
+
+        return ret;
+}
+
+/**
+ * transmit_bytes
+ * get the current transmit bytes
+ */
+unsigned long long int
+transmit_bytes()
+{
+        int ret = 0;
+
+        /* interface rx_bytes file */
+        static const char *fp = "/sys/class/net/" NIC "/statistics/tx_bytes";
+
+        /* byte counters */
+        static unsigned long long int last_bytes = 0;
+        unsigned long long int this_bytes;
+
+        /* read file */
+        this_bytes = read_bytes(fp);
+        if (!this_bytes)
+                return 0;
+
+        /* done */
+        ret = this_bytes - last_bytes;
+        last_bytes = this_bytes;
 
         return ret;
 }
