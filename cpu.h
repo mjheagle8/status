@@ -8,5 +8,6 @@
 
 float *cpuperc();
 void cpuPP(const float *);
+unsigned int cpufreq();
 
 #endif

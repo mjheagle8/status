@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include "config.h"
 
 #define LINELENGTH 128
@@ -105,6 +106,41 @@ parse_cpu_stat_line(FILE *fd)
         this->busy = user + usernice + system + irq + softirq + steal + guest;
 
         return this;
+}
+
+/**
+ * cpufreq
+ * get the frequency of the first cpu
+ */
+unsigned int
+cpufreq()
+{
+        char buffer[256];
+        unsigned int ret = 0;
+        float tmp;
+
+        /* open file */
+        FILE *fd = fopen("/proc/cpuinfo", "r");
+        if (!fd)
+        {
+                fprintf(stderr, "failed to open %s\n", "/proc/stat");
+                return false;
+        }
+
+        /* read file */
+        do
+        {
+                memset(buffer, 0, 256);
+                fgets(buffer, 256, fd);
+        } while (buffer[4] != 'M');
+
+        /* close file */
+        fclose(fd);
+
+        /* parse buffer */
+        if (sscanf(buffer, "cpu MHz : %f", &tmp) == 1)
+                ret = (unsigned int)tmp;
+        return ret;
 }
 
 /**
