@@ -9,3 +9,4 @@
 #define TIMEFMT         "%H:%M:%S %a %b %d"
 #define TIMELENGTH      32      /* number of characters in the date string */
 #define NIC             "wlan0" /* network interface */
+#define GET_CPUFREQ

@@ -115,6 +115,7 @@ parse_cpu_stat_line(FILE *fd)
 unsigned int
 cpufreq()
 {
+#ifdef GET_CPUFREQ
         char buffer[256];
         unsigned int ret = 0;
         float tmp;
@@ -141,6 +142,9 @@ cpufreq()
         if (sscanf(buffer, "cpu MHz : %f", &tmp) == 1)
                 ret = (unsigned int)tmp;
         return ret;
+#else
+        return 0;
+#endif
 }
 
 /**
