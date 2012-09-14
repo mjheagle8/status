@@ -38,7 +38,7 @@ main()
                 /* get cpu usage */
                 float perc[NCPUS];
                 if (cpuperc(perc))
-                        cpuPP(perc);
+                        cpuPP(perc, cpufreq());
 
                 /* get memory */
                 const int mem = memused();

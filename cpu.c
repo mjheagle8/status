@@ -147,9 +147,10 @@ cpufreq()
  * cpuPP
  * pretty print the cpu percentage
  * stat - the array of cpu percentages
+ * freq - the frequency of the first processor
  */
 void
-cpuPP(const float *stat)
+cpuPP(const float *stat, unsigned int freq)
 {
         int i;
         for (i=0; i<NCPUS; i++)
@@ -161,5 +162,7 @@ cpuPP(const float *stat)
                 else
                         printf("%0.1f%%", stat[i]);
         }
+        if (freq)
+                printf(" @ %d Hz", freq);
         printf(" :: ");
 }

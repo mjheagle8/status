@@ -7,7 +7,7 @@
 #define _STATUS_CPU_H
 
 float *cpuperc();
-void cpuPP(const float *);
+void cpuPP(const float *, unsigned int);
 unsigned int cpufreq();
 
 #endif
