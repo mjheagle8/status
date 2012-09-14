@@ -46,12 +46,25 @@ if_up()
 /**
  * print_data_rate
  * pretty print a data rate with units
- * br - bytes
+ * b - bytes
  */
 void
-print_data_rate(unsigned long long int br)
+print_data_rate(unsigned long long int b)
 {
-        printf("%Ld", 100000*br/INTERVAL);
+        static const double KB = 1024;
+        static const double MB = 1024*1024;
+        static const double GB = 1024*1024*1024;
+
+        const double br = (double)(1000000*(double)b/INTERVAL);
+
+        if (br<KB)
+                printf("%.1fB", br);
+        else if (br<MB)
+                printf("%.2fK", br/KB);
+        else if (br<GB)
+                printf("%.2fM", br/MB);
+        else
+                printf("%.2fG", br/GB);
 }
 
 /**
@@ -167,7 +180,7 @@ unsigned long long int read_bytes(const char *fp)
         }
 
         /* read data */
-        if (fscanf(fd, "%Ld", &ret) == 0)
+        if (fscanf(fd, "%ld", &ret) == 0)
         {
                 fprintf(stderr, "error reading %s\n", fp);
                 return 0;
