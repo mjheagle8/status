@@ -9,5 +9,6 @@
 #include <stdbool.h>
 
 bool if_up();
+unsigned long long int download_bytes();
 
 #endif
