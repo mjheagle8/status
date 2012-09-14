@@ -8,9 +8,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include "config.h"
 #include "cpu.h"
 #include "mem.h"
-#include "config.h"
+#include "network.h"
 
 /* macros */
 #define delimiter() printf(":: ")
