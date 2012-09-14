@@ -180,7 +180,7 @@ unsigned long long int read_bytes(const char *fp)
         }
 
         /* read data */
-        if (fscanf(fd, "%ld", &ret) == 0)
+        if (fscanf(fd, "%Ld", &ret) == 0)
         {
                 fprintf(stderr, "error reading %s\n", fp);
                 return 0;
