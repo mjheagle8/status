@@ -11,6 +11,7 @@
 #include "config.h"
 #include "alsa.h"
 #include "cpu.h"
+#include "dzen.h"
 #include "mem.h"
 #include "mpd.h"
 #include "network.h"
@@ -55,7 +56,15 @@ main()
 
                 /* get volume */
 #ifdef GET_VOLUME
-                printf("vol:%d%% ", getvolume());
+#ifdef USE_DZEN
+                dzen_color(DZEN_HIGHLIGHT, NULL);
+                dzen_icon("/usr/share/icons/stlarch_icons/vol4.xbm");
+                dzen_color(DZEN_FG, NULL);
+                printf(" ");
+#else
+                printf("vol:");
+#endif
+                printf("%d%% ", getvolume());
                 delimiter();
 #endif
 
