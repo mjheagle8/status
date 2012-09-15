@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "config.h"
+#include "dzen.h"
 
 /**
  * memused
@@ -54,6 +56,12 @@ memused()
 void
 memPP (const int mem)
 {
+#ifdef USE_DZEN
+        dzen_color(DZEN_HIGHLIGHT, NULL);
+        dzen_icon("/usr/share/icons/stlarch_icons/mem2.xbm");
+        dzen_color(DZEN_FG, NULL);
+        printf(" ");
+#endif
         if (mem<1024)
                 printf("%dK ", mem);
         else if (mem<1024*1024)
