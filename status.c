@@ -37,11 +37,6 @@ main()
         /* main loop */
         while (1)
         {
-                /* get mpd status */
-#ifdef MPD_HOST
-                mpd_status();
-                delimiter();
-#endif
                 /* get network status */
                 if (if_up())
                 {
@@ -53,6 +48,12 @@ main()
                                 delimiter();
                         }
                 }
+
+                /* get mpd status */
+#ifdef MPD_HOST
+                mpd_status();
+                delimiter();
+#endif
 
                 /* get volume */
 #ifdef GET_VOLUME
