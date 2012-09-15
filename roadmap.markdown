@@ -15,9 +15,9 @@ by mjheagle
 * network
   * NIC status
   * speed up/down
-- mpd
-  - play/pause
-  - song metadata
+* mpd
+  * play/pause
+  * song metadata
   - run in background thread
 * alsa
   * get volume
