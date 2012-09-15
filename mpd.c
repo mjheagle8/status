@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <mpd/client.h>
 #include "config.h"
+#include "dzen.h"
 
 /* global variables */
 struct mpd_connection *connection = NULL;
@@ -20,7 +21,7 @@ mpd_status()
 {
         /* print prefix */
 #ifdef USE_DZEN
-        printf("^i(/usr/share/icons/stlarch_icons/note1.xbm)");
+        dzen_icon("/usr/share/icons/stlarch_icons/note1.xbm");
 #else
         printf("MPD: ");
 #endif
@@ -60,13 +61,19 @@ mpd_status()
         }
         else if (playstate == MPD_STATE_PAUSE)
 #ifdef USE_DZEN
-                printf("^i(/usr/share/icons/stlarch_icons/pause1.xbm) ");
+        {
+                dzen_icon("/usr/share/icons/stlarch_icons/pause1.xbm");
+                printf(" ");
+        }
 #else
                 printf("(paused) ");
 #endif
         else if (playstate == MPD_STATE_PLAY)
 #ifdef USE_DZEN
-                printf("^i(/usr/share/icons/stlarch_icons/play1.xbm) ");
+        {
+                dzen_icon("/usr/share/icons/stlarch_icons/play1.xbm");
+                printf(" ");
+        }
 #else
                 printf("(playing) ");
 #endif
