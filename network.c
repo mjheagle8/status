@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "config.h"
+#include "dzen.h"
 #include "network.h"
 
 /* local functions */
@@ -75,16 +76,37 @@ print_data_rate(unsigned long long int b)
 void
 print_data_rates(unsigned long long int rx, unsigned long long int tx)
 {
+#ifdef USE_DZEN
+        if (rx || tx)
+        {
+                dzen_color(DZEN_HIGHLIGHT, NULL);
+                dzen_icon("/usr/share/icons/stlarch_icons/wireless3.xbm");
+                dzen_color(DZEN_FG, NULL);
+                printf(" ");
+        }
+#endif
         if (rx)
         {
+#ifdef USE_DZEN
+                dzen_icon("/usr/share/icons/stlarch_icons/downleft3.xbm");
+#else
                 printf("d:");
+#endif
                 print_data_rate(rx);
                 if (tx)
+#ifdef USE_DZEN
+                        printf(" ");
+#else
                         printf("/");
+#endif
         }
         if (tx)
         {
+#ifdef USE_DZEN
+                dzen_icon("/usr/share/icons/stlarch_icons/upright3.xbm");
+#else
                 printf("u:");
+#endif
                 print_data_rate(tx);
         }
 
