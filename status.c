@@ -16,7 +16,11 @@
 #include "network.h"
 
 /* macros */
+#ifdef USE_DZEN
+#define delimiter()
+#else
 #define delimiter() printf(":: ")
+#endif
 
 /* function prototypes */
 void datePP();
