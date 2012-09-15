@@ -21,10 +21,10 @@ by mjheagle
   - run in background thread
 * alsa
   * get volume
-- dzen
-  - compile time flag
-  - print icons
-  - print colors
+* dzen
+  * compile time flag
+  * print icons
+  * print colors
 - notifications ?
 
 vim: et ts=2 sw=2 sts=2
