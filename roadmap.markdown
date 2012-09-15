@@ -19,9 +19,8 @@ by mjheagle
   - play/pause
   - song metadata
   - run in background thread
-- alsa
-  - get volume
-  - run in background thread
+* alsa
+  * get volume
 - dzen
   - compile time flag
   - print icons
