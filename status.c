@@ -34,8 +34,8 @@ main()
                 /* get network status */
                 if (if_up())
                 {
-                        unsigned long long int tx = transmit_bytes();
-                        unsigned long long int rx = download_bytes();
+                        const unsigned long long int tx = transmit_bytes();
+                        const unsigned long long int rx = download_bytes();
                         print_data_rates(rx, tx);
                         if (rx || tx)
                                 delimiter();
@@ -43,8 +43,7 @@ main()
 
                 /* get volume */
 #ifdef GET_VOLUME
-                int volume = getvolume();
-                printf("vol:%d%% ", volume);
+                printf("vol:%d%% ", getvolume());
                 delimiter();
 #endif
 
@@ -54,8 +53,7 @@ main()
                         cpuPP(perc, cpufreq());
 
                 /* get memory */
-                const int mem = memused();
-                memPP(mem);
+                memPP(memused());
                 delimiter();
 
                 /* print date */
