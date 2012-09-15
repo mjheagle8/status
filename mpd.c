@@ -52,10 +52,19 @@ mpd_status()
                 return true;
         }
         else if (playstate == MPD_STATE_PAUSE)
-                printf("MPD: paused ");
+                printf("MPD: (paused) ");
         else if (playstate == MPD_STATE_PLAY)
-                printf("MPD: playing ");
+                printf("MPD: (playing) ");
 
+        /* get song */
+        struct mpd_song *song = NULL;
+        song = mpd_run_current_song(connection);
+        const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+        const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
+        printf("%s - %s ", artist, title);
+
+        /* clean up */
+        mpd_song_free(song);
         mpd_status_free(status);
         return true;
 }
