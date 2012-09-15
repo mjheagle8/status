@@ -107,6 +107,13 @@ datePP()
         time_t cur;
         char *timestr;
 
+#ifdef USE_DZEN
+        dzen_color(DZEN_HIGHLIGHT, NULL);
+        dzen_icon("/usr/share/icons/stlarch_icons/clock2.xbm");
+        dzen_color(DZEN_FG, NULL);
+        printf(" ");
+#endif
+
         /* get current time */
         time(&cur);
         now = localtime(&cur);
