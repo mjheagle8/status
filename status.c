@@ -64,7 +64,7 @@ main()
                 /* wait for next iteration */
                 fflush(stdout);
 #ifdef GET_VOLUME
-                alsa_sleep(INTERVAL/100);
+                alsa_sleep(INTERVAL/1000);
 #else
                 usleep(INTERVAL);
 #endif

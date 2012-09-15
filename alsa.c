@@ -20,7 +20,6 @@ snd_mixer_elem_t *alsamixer = NULL;
 void
 init_alsa()
 {
-        snd_mixer_t *alsa;
         snd_mixer_open(&alsa, 0);
         snd_mixer_attach(alsa, SOUNDCARD);
         snd_mixer_selem_register(alsa, NULL, NULL);
