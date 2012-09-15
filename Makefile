@@ -2,7 +2,7 @@ OUT 	= status
 
 #variables
 CC = gcc
-CFLAGS = -Wall -g -Wextra
+CFLAGS = -Wall -g -Wextra -O2
 LDFLAGS = -lasound -lmpdclient
 
 SRC = $(wildcard *.c)
