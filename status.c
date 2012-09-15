@@ -48,7 +48,9 @@ main()
                         const unsigned long long int rx = download_bytes();
                         print_data_rates(rx, tx);
                         if (rx || tx)
+                        {
                                 delimiter();
+                        }
                 }
 
                 /* get volume */
@@ -70,12 +72,12 @@ main()
                 datePP();
 
                 /* wait for next iteration */
+                printf("\n");
                 fflush(stdout);
                 usleep(INTERVAL);
 #ifdef GET_VOLUME
                 alsa_refresh(INTERVAL/1000);
 #endif
-                printf("\n");
         }
 
         return 0;
