@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "config.h"
+#include "dzen.h"
 
 #define LINELENGTH 128
 
@@ -157,6 +158,12 @@ void
 cpuPP(const float *stat, unsigned int freq)
 {
         int i;
+#ifdef USE_DZEN
+        dzen_color(DZEN_HIGHLIGHT, NULL);
+        dzen_icon("/usr/share/icons/stlarch_icons/cpu13.xbm");
+        dzen_color(DZEN_FG, NULL);
+        printf(" ");
+#endif
         for (i=0; i<NCPUS; i++)
         {
                 if (i>0)
@@ -167,6 +174,13 @@ cpuPP(const float *stat, unsigned int freq)
                         printf("%0.1f%%", stat[i]);
         }
         if (freq)
-                printf(" @ %d Hz", freq);
-        printf(" :: ");
+        {
+#ifdef USE_DZEN
+                dzen_color(DZEN_FADE, NULL);
+#endif
+                printf(" @ %d MHz ", freq);
+#ifdef USE_DZEN
+                dzen_color(DZEN_FG, NULL);
+#endif
+        }
 }

@@ -71,7 +71,10 @@ main()
                 /* get cpu usage */
                 float perc[NCPUS];
                 if (cpuperc(perc))
+                {
                         cpuPP(perc, cpufreq());
+                        delimiter();
+                }
 
                 /* get memory */
                 memPP(memused());
