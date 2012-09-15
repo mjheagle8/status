@@ -186,5 +186,8 @@ unsigned long long int read_bytes(const char *fp)
                 return 0;
         }
 
+        /* close file */
+        fclose(fd);
+
         return ret;
 }
