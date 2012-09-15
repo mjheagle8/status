@@ -3,6 +3,7 @@ OUT 	= status
 #variables
 CC = gcc
 CFLAGS = -Wall -g -Wextra
+LDFLAGS = -lasound
 
 SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
@@ -16,7 +17,7 @@ tags: $(SRC)
 	$(CC) -c $(CFLAGS) $<
 
 $(OUT): $(OBJ)
-	$(CC) -o $@ $(OBJ)
+	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
 clean:
 	rm $(OBJ) $(OUT)

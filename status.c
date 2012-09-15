@@ -12,6 +12,7 @@
 #include "cpu.h"
 #include "mem.h"
 #include "network.h"
+#include "alsa.h"
 
 /* macros */
 #define delimiter() printf(":: ")
@@ -22,6 +23,11 @@ void datePP();
 int
 main()
 {
+        /* initialization */
+#ifdef GET_VOLUME
+        init_alsa();
+#endif
+
         /* main loop */
         while (1)
         {
@@ -34,6 +40,13 @@ main()
                         if (rx || tx)
                                 delimiter();
                 }
+
+                /* get volume */
+#ifdef GET_VOLUME
+                int volume = getvolume();
+                printf("vol:%d%% ", volume);
+                delimiter();
+#endif
 
                 /* get cpu usage */
                 float perc[NCPUS];
@@ -50,7 +63,11 @@ main()
 
                 /* wait for next iteration */
                 fflush(stdout);
+#ifdef GET_VOLUME
+                alsa_sleep(INTERVAL/100);
+#else
                 usleep(INTERVAL);
+#endif
                 printf("\n");
         }
 
