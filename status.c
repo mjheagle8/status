@@ -9,10 +9,11 @@
 #include <time.h>
 #include <unistd.h>
 #include "config.h"
+#include "alsa.h"
 #include "cpu.h"
 #include "mem.h"
+#include "mpd.h"
 #include "network.h"
-#include "alsa.h"
 
 /* macros */
 #define delimiter() printf(":: ")
@@ -31,6 +32,11 @@ main()
         /* main loop */
         while (1)
         {
+                /* get mpd status */
+#ifdef MPD_HOST
+                mpd_status();
+                delimiter();
+#endif
                 /* get network status */
                 if (if_up())
                 {
