@@ -178,7 +178,7 @@ cpuPP(const float *stat, unsigned int freq)
 #ifdef USE_DZEN
                 dzen_color(DZEN_FADE, NULL);
 #endif
-                printf(" @ %d MHz ", freq);
+                printf(" @ %.2f ", (float)freq/1000);
 #ifdef USE_DZEN
                 dzen_color(DZEN_FG, NULL);
 #endif
