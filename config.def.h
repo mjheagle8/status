@@ -21,3 +21,6 @@
 #define SOUNDCARD       "default"
 #define ALSAMIXER       "Master"
 #define GET_VOLUME
+
+/* dzen */
+#define USE_DZEN

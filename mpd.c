@@ -18,6 +18,13 @@ struct mpd_connection *connection = NULL;
 bool
 mpd_status()
 {
+        /* print prefix */
+#ifdef USE_DZEN
+        printf("^i(/usr/share/icons/stlarch_icons/note1.xbm)");
+#else
+        printf("MPD: ");
+#endif
+
         /* connect if there is no connection */
         if (!connection)
                 connection = mpd_connection_new(MPD_HOST, MPD_PORT, MPD_TIMEOUT);
@@ -34,7 +41,7 @@ mpd_status()
                 /* if reconnection failed, error out */
                 if (!status)
                 {
-                        printf("MPD: connection failed ");
+                        printf("connection failed ");
                         return false;
                 }
         }
@@ -43,18 +50,26 @@ mpd_status()
         enum mpd_state playstate = mpd_status_get_state(status);
         if (playstate == MPD_STATE_UNKNOWN)
         {
-                printf("MPD: state unknown");
+                printf("state unknown");
                 return false;
         }
         else if (playstate == MPD_STATE_STOP)
         {
-                printf("MPD: stopped ");
+                printf("stopped ");
                 return true;
         }
         else if (playstate == MPD_STATE_PAUSE)
-                printf("MPD: (paused) ");
+#ifdef USE_DZEN
+                printf("^i(/usr/share/icons/stlarch_icons/pause1.xbm) ");
+#else
+                printf("(paused) ");
+#endif
         else if (playstate == MPD_STATE_PLAY)
-                printf("MPD: (playing) ");
+#ifdef USE_DZEN
+                printf("^i(/usr/share/icons/stlarch_icons/play1.xbm) ");
+#else
+                printf("(playing) ");
+#endif
 
         /* get song */
         struct mpd_song *song = NULL;
