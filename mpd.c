@@ -19,6 +19,10 @@ struct mpd_connection *connection = NULL;
 bool
 mpd_status()
 {
+        bool ret = true;
+        struct mpd_status *status = NULL;
+        struct mpd_song *song = NULL;
+
         /* print prefix */
 #ifdef USE_DZEN
         dzen_color(DZEN_HIGHLIGHT, NULL);
@@ -34,7 +38,6 @@ mpd_status()
                 connection = mpd_connection_new(MPD_HOST, MPD_PORT, MPD_TIMEOUT);
 
         /* get status */
-        struct mpd_status *status = NULL;
         status = mpd_run_status(connection);
         /* attempt to reconnect if status call failed */
         if (!status)
@@ -66,7 +69,7 @@ mpd_status()
 #ifdef USE_DZEN
                 dzen_color(DZEN_FG, NULL);
 #endif
-                return true;
+                goto done;
         }
         else if (playstate == MPD_STATE_PAUSE)
 #ifdef USE_DZEN
@@ -92,7 +95,6 @@ mpd_status()
 #endif
 
         /* get song */
-        struct mpd_song *song = NULL;
         song = mpd_run_current_song(connection);
         const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
         const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
@@ -105,9 +107,13 @@ mpd_status()
 #else
         printf("%s - %s ", artist, title);
 #endif
+        goto done;
 
+done:
         /* clean up */
-        mpd_song_free(song);
-        mpd_status_free(status);
-        return true;
+        if (song)
+                mpd_song_free(song);
+        if (status)
+                mpd_status_free(status);
+        return ret;
 }
