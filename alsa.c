@@ -68,13 +68,11 @@ getvolume()
 }
 
 /**
- * alsa_sleep
- * wait for mixer to be ready over sleep interval
- * interval - ms to sleep
+ * alsa_refresh
+ * handle pending mixer events
  */
 void
-alsa_sleep(const int interval)
+alsa_refresh()
 {
-        snd_mixer_wait(alsa, interval);
         snd_mixer_handle_events(alsa);
 }
