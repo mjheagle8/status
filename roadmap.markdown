@@ -25,6 +25,7 @@ by mjheagle
   * compile time flag
   * print icons
   * print colors
+* battery
 - notifications ?
 
 vim: et ts=2 sw=2 sts=2
