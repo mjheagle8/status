@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include "config.h"
 #include "alsa.h"
+#include "battery.h"
 #include "cpu.h"
 #include "dzen.h"
 #include "mem.h"
@@ -80,6 +81,12 @@ main()
                 /* get memory */
                 memPP(memused());
                 delimiter();
+
+                /* get battery */
+#ifdef GET_BATTERY
+                batteryPP();
+                delimiter();
+#endif
 
                 /* print date */
                 datePP();
