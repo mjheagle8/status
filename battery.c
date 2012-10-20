@@ -45,10 +45,19 @@ batteryPP()
                 dzen_icon("/usr/share/icons/stlarch_icons/batt5full.xbm");
         dzen_color(DZEN_FG, NULL);
         printf(" ");
+        if (pct > 50)
+                dzen_color("#93D44F", NULL);
+        else if (pct > 25)
+                dzen_color("#F5B915", NULL);
+        else
+                dzen_color("#BF1E2D", NULL);
 #else
         printf("%c ", status);
 #endif
         printf("%.1f%% ", pct);
+#ifdef USE_DZEN
+        dzen_color(DZEN_FG, NULL);
+#endif
 
         /* increment counter */
         counter++;
