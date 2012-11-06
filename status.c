@@ -43,7 +43,8 @@ main()
                 {
                         const unsigned long long int tx = transmit_bytes();
                         const unsigned long long int rx = download_bytes();
-                        print_data_rates(rx, tx);
+                        char *net = print_data_rates(rx, tx);
+                        printf("%s", net);
                         if (rx || tx)
                         {
                                 delimiter();

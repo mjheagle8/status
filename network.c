@@ -5,13 +5,15 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 #include "config.h"
 #include "dzen.h"
 #include "network.h"
 
 /* local functions */
 unsigned long long int read_bytes(const char *);
-void print_data_rate(unsigned long long int);
+char *print_data_rate(unsigned long long int);
 
 /**
  * if_up
@@ -49,7 +51,7 @@ if_up()
  * pretty print a data rate with units
  * b - bytes
  */
-void
+char *
 print_data_rate(unsigned long long int b)
 {
         static const double KB = 1024;
@@ -57,15 +59,19 @@ print_data_rate(unsigned long long int b)
         static const double GB = 1024*1024*1024;
 
         const double br = (double)(1000000*(double)b/INTERVAL);
+        const int buflen = 8;
+        char *buf = calloc(buflen, sizeof(char));
 
         if (br<KB)
-                printf("%.1fB", br);
+                snprintf(buf, buflen, "%.1fB", br);
         else if (br<MB)
-                printf("%.2fK", br/KB);
+                snprintf(buf, buflen, "%.2fK", br/KB);
         else if (br<GB)
-                printf("%.2fM", br/MB);
+                snprintf(buf, buflen, "%.2fM", br/MB);
         else
-                printf("%.2fG", br/GB);
+                snprintf(buf, buflen, "%.2fG", br/GB);
+
+        return buf;
 }
 
 /**
@@ -73,45 +79,32 @@ print_data_rate(unsigned long long int b)
  * rx - received bytes
  * tx - transmit bytes
  */
-void
+char *
 print_data_rates(unsigned long long int rx, unsigned long long int tx)
 {
-#ifdef USE_DZEN
-        if (rx || tx)
-        {
-                dzen_color(DZEN_HIGHLIGHT, NULL);
-                dzen_icon("/usr/share/icons/stlarch_icons/wireless3.xbm");
-                dzen_color(DZEN_FG, NULL);
-                printf(" ");
-        }
-#endif
+        const int buflen = 25;
+        char *buf = calloc(buflen, sizeof(char));
+
         if (rx)
         {
-#ifdef USE_DZEN
-                dzen_icon("/usr/share/icons/stlarch_icons/downleft3.xbm");
-#else
-                printf("d:");
-#endif
-                print_data_rate(rx);
-                if (tx)
-#ifdef USE_DZEN
-                        printf(" ");
-#else
-                        printf("/");
-#endif
+                char *tmp = NULL;
+                strcat(buf, "d:");
+                tmp = print_data_rate(rx);
+                strcat(buf, tmp);
+                strcat(buf, " ");
+                free(tmp);
         }
         if (tx)
         {
-#ifdef USE_DZEN
-                dzen_icon("/usr/share/icons/stlarch_icons/upright3.xbm");
-#else
-                printf("u:");
-#endif
-                print_data_rate(tx);
+                char *tmp = NULL;
+                strcat(buf, "u:");
+                tmp = print_data_rate(tx);
+                strcat(buf, tmp);
+                strcat(buf, " ");
+                free(tmp);
         }
 
-        if (rx || tx)
-                printf(" ");
+        return buf;
 }
 
 /**
