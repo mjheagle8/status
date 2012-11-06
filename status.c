@@ -25,7 +25,7 @@
 #endif
 
 /* function prototypes */
-void datePP();
+char *datePP();
 
 int
 main()
@@ -89,7 +89,9 @@ main()
 #endif
 
                 /* print date */
-                datePP();
+                char *date = datePP();
+                printf(date);
+                free(date);
 
                 /* wait for next iteration */
                 printf("\n");
@@ -108,7 +110,7 @@ main()
  * get the current date
  * and print it using strftime
  */
-void
+char *
 datePP()
 {
         struct tm *now;
@@ -130,6 +132,5 @@ datePP()
         timestr = malloc(TIMELENGTH*sizeof(char));
         strftime(timestr, TIMELENGTH, TIMEFMT, now);
 
-        printf("%s", timestr);
-        free(timestr);
+        return timestr;
 }
