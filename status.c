@@ -45,6 +45,7 @@ main()
                         const unsigned long long int rx = download_bytes();
                         char *net = print_data_rates(rx, tx);
                         printf("%s", net);
+                        free(net);
                         if (rx || tx)
                         {
                                 delimiter();
@@ -80,7 +81,9 @@ main()
                 }
 
                 /* get memory */
-                memPP(memused());
+                char *mem = memPP(memused());
+                printf("%s", mem);
+                free(mem);
                 delimiter();
 
                 /* get battery */

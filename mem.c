@@ -53,19 +53,18 @@ memused()
  * pretty-print the memory used
  * mem - memory used in KB
  */
-void
+char *
 memPP (const int mem)
 {
-#ifdef USE_DZEN
-        dzen_color(DZEN_HIGHLIGHT, NULL);
-        dzen_icon("/usr/share/icons/stlarch_icons/mem2.xbm");
-        dzen_color(DZEN_FG, NULL);
-        printf(" ");
-#endif
+        const int buflen = 8;
+        char *buf = calloc(buflen, sizeof(char));
+
         if (mem<1024)
-                printf("%dK ", mem);
+                snprintf(buf, buflen, "%dK ", mem);
         else if (mem<1024*1024)
-                printf("%.1fM ", (float)mem / 1024);
+                snprintf(buf, buflen, "%.1fM ", (float)mem / 1024);
         else
-                printf("%.1fG ", (float)mem / (1024*1024));
+                snprintf(buf, buflen, "%.1fG ", (float)mem / (1024*1024));
+
+        return buf;
 }
