@@ -24,14 +24,7 @@ mpd_status()
         struct mpd_song *song = NULL;
 
         /* print prefix */
-#ifdef USE_DZEN
-        dzen_color(DZEN_HIGHLIGHT, NULL);
-        dzen_icon("/usr/share/icons/stlarch_icons/note1.xbm");
-        dzen_color(DZEN_FG, NULL);
-        printf(" ");
-#else
         printf("MPD: ");
-#endif
 
         /* connect if there is no connection */
         if (!connection)
@@ -62,51 +55,19 @@ mpd_status()
         }
         else if (playstate == MPD_STATE_STOP)
         {
-#ifdef USE_DZEN
-                dzen_color(DZEN_FADE, NULL);
-#endif
                 printf("stopped ");
-#ifdef USE_DZEN
-                dzen_color(DZEN_FG, NULL);
-#endif
                 goto done;
         }
         else if (playstate == MPD_STATE_PAUSE)
-#ifdef USE_DZEN
-        {
-                dzen_color(DZEN_FADE, NULL);
-                dzen_icon("/usr/share/icons/stlarch_icons/pause1.xbm");
-                dzen_color(DZEN_FG, NULL);
-                printf(" ");
-        }
-#else
                 printf("(paused) ");
-#endif
         else if (playstate == MPD_STATE_PLAY)
-#ifdef USE_DZEN
-        {
-                dzen_color(DZEN_FADE, NULL);
-                dzen_icon("/usr/share/icons/stlarch_icons/play1.xbm");
-                dzen_color(DZEN_FG, NULL);
-                printf(" ");
-        }
-#else
                 printf("(playing) ");
-#endif
 
         /* get song */
         song = mpd_run_current_song(connection);
         const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
         const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
-#ifdef USE_DZEN
-        printf("%s ", artist);
-        dzen_color(DZEN_FADE, NULL);
-        printf("-");
-        dzen_color(DZEN_FG, NULL);
-        printf(" %s ", title);
-#else
         printf("%s - %s ", artist, title);
-#endif
         goto done;
 
 done:

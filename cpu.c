@@ -158,40 +158,15 @@ void
 cpuPP(const float *stat, unsigned int freq)
 {
         int i;
-#ifdef USE_DZEN
-        dzen_color(DZEN_HIGHLIGHT, NULL);
-        dzen_icon("/usr/share/icons/stlarch_icons/cpu13.xbm");
-        dzen_color(DZEN_FG, NULL);
-        printf(" ");
-#endif
         for (i=0; i<NCPUS; i++)
         {
                 if (i>0)
                         printf("/");
-#ifdef USE_DZEN
-                if (stat[i]<33.3)
-                        dzen_color("#93D44F", NULL);
-                else if (stat[i]<66.7)
-                        dzen_color("#F5B915", NULL);
-                else
-                        dzen_color("#BF1E2D", NULL);
-#endif
                 if (stat[i]<10)
                         printf("%0.2f%%", stat[i]);
                 else
                         printf("%0.1f%%", stat[i]);
-#ifdef USE_DZEN
-                dzen_color(DZEN_FG, NULL);
-#endif
         }
         if (freq)
-        {
-#ifdef USE_DZEN
-                dzen_color(DZEN_FADE, NULL);
-#endif
                 printf(" @ %.2f ", (float)freq/1000);
-#ifdef USE_DZEN
-                dzen_color(DZEN_FG, NULL);
-#endif
-        }
 }

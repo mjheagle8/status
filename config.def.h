@@ -21,10 +21,3 @@
 #define SOUNDCARD       "default"
 #define ALSAMIXER       "Master"
 #define GET_VOLUME
-
-/* dzen */
-#define USE_DZEN
-#define DZEN_FG         "#AAAAAA"
-#define DZEN_BG         "#222222"
-#define DZEN_FADE       "#777777"
-#define DZEN_HIGHLIGHT  "#0055FF"
