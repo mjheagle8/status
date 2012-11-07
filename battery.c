@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "battery.h"
 #include "config.h"
 #include "dzen.h"
@@ -15,15 +16,17 @@ static float charge_pct();
 
 /**
  * batteryPP
- * get the battery status and print it
+ * get the battery status
+ * returns a alloc'd string that needs to be free'd
  */
-void
+char *
 batteryPP()
 {
         /* initial declarations */
         static short counter = 0;
         static char status = -1;
         static float pct = -1;
+        char *buf;
 
         /* check whether we should recompute values this time */
         if (counter == BATTERY_INT || status < 0)
@@ -35,13 +38,16 @@ batteryPP()
 
         /* check for failure parsing */
         if (!status)
-                return;
+                return NULL;
 
-        printf("%c ", status);
-        printf("%.1f%% ", pct);
+        buf = calloc(10, sizeof(char));
+        snprintf(buf, 3, "%c ", status);
+        snprintf(buf+2, 7, "%.1f%% ", pct);
 
         /* increment counter */
         counter++;
+
+        return buf;
 }
 
 /**

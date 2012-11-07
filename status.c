@@ -88,7 +88,9 @@ main()
 
                 /* get battery */
 #ifdef GET_BATTERY
-                batteryPP();
+                char *bat = batteryPP();
+                printf("%s", bat);
+                free(bat);
                 delimiter();
 #endif
 
