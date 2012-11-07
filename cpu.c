@@ -154,19 +154,34 @@ cpufreq()
  * stat - the array of cpu percentages
  * freq - the frequency of the first processor
  */
-void
+char *
 cpuPP(const float *stat, unsigned int freq)
 {
+        char *buf = calloc(32, sizeof(char));
+
         int i;
         for (i=0; i<NCPUS; i++)
         {
+                char *format;
                 if (i>0)
-                        printf("/");
+                        strncat(buf, "/", 1);
                 if (stat[i]<10)
-                        printf("%0.2f%%", stat[i]);
+                        format = "%0.2f%%";
                 else
-                        printf("%0.1f%%", stat[i]);
+                        format = "%0.1f%%";
+
+                char *tmp = calloc(8, sizeof(char));
+                snprintf(tmp, 8, format, stat[i]);
+                strncat(buf, tmp, 8);
+                free(tmp);
         }
         if (freq)
-                printf(" @ %.2f ", (float)freq/1000);
+        {
+                char *tmp = calloc(12, sizeof(char));
+                snprintf(tmp, 12, " @ %.2f ", (float)freq/1000);
+                strncat(buf, tmp, 12);
+                free(tmp);
+        }
+
+        return buf;
 }

@@ -78,7 +78,9 @@ main()
                 float perc[NCPUS];
                 if (cpuperc(perc))
                 {
-                        cpuPP(perc, cpufreq());
+                        char *cpu = cpuPP(perc, cpufreq());
+                        printf("%s", cpu);
+                        free(cpu);
                         delimiter();
                 }
 
