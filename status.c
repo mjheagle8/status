@@ -54,7 +54,9 @@ main()
 
                 /* get mpd status */
 #ifdef MPD_HOST
-                mpd_status();
+                char *mpd = mpd_status();
+                printf("%s", mpd);
+                free(mpd);
                 delimiter();
 #endif
 

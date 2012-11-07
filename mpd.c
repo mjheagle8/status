@@ -5,6 +5,8 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <mpd/client.h>
 #include "config.h"
 #include "dzen.h"
@@ -16,15 +18,14 @@ struct mpd_connection *connection = NULL;
  * mpd_status
  * print the now playing information
  */
-bool
+char *
 mpd_status()
 {
-        bool ret = true;
         struct mpd_status *status = NULL;
         struct mpd_song *song = NULL;
-
-        /* print prefix */
-        printf("MPD: ");
+        char *buf = calloc(256, sizeof(char));
+        char *state;
+        bool fetch_song = true;
 
         /* connect if there is no connection */
         if (!connection)
@@ -41,40 +42,44 @@ mpd_status()
                 /* if reconnection failed, error out */
                 if (!status)
                 {
-                        printf("connection failed ");
-                        return false;
+                        strncat(buf+5, "connection failed", 249);
+                        return buf;
                 }
         }
 
         /* get play state */
         enum mpd_state playstate = mpd_status_get_state(status);
-        if (playstate == MPD_STATE_UNKNOWN)
+        if (playstate == MPD_STATE_STOP)
         {
-                printf("state unknown");
-                return false;
+                state = "stopped";
+                fetch_song = false;
         }
-        else if (playstate == MPD_STATE_STOP)
+        else if (playstate == MPD_STATE_PAUSE || playstate == MPD_STATE_PLAY)
         {
-                printf("stopped ");
-                goto done;
+                state = calloc(16, sizeof(char));
+                const int elapsed = mpd_status_get_elapsed_time(status);
+                const int total = mpd_status_get_total_time(status);
+                snprintf(state, 16, "%d:%02d/%d:%02d", elapsed/60, elapsed%60, total/60, total%60);
         }
-        else if (playstate == MPD_STATE_PAUSE)
-                printf("(paused) ");
-        else if (playstate == MPD_STATE_PLAY)
-                printf("(playing) ");
+        else
+        {
+                state = "state unknown";
+                fetch_song = false;
+        }
+        mpd_status_free(status);
 
         /* get song */
-        song = mpd_run_current_song(connection);
-        const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
-        const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
-        printf("%s - %s ", artist, title);
-        goto done;
-
-done:
-        /* clean up */
-        if (song)
+        if (fetch_song)
+        {
+                song = mpd_run_current_song(connection);
+                const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+                const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
+                snprintf(buf, 256, "MPD: %s %s - %s ", state, artist, title);
+                free(state);
                 mpd_song_free(song);
-        if (status)
-                mpd_status_free(status);
-        return ret;
+        }
+        else
+                snprintf(buf, 256, "MPD: %s", state);
+
+        return buf;
 }

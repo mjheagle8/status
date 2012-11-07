@@ -6,8 +6,6 @@
 #ifndef _STATUS_MPD_H
 #define _STATUS_MPD_H
 
-#include <stdbool.h>
-
-bool mpd_status();
+char *mpd_status();
 
 #endif
