@@ -4,11 +4,13 @@
  * by mjheagle
  */
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <X11/Xlib.h>
 #include "config.h"
 #include "alsa.h"
 #include "battery.h"
@@ -27,11 +29,29 @@
 
 /* function prototypes */
 char *datePP();
+void sigh(int);
+
+/* global variables */
+static Display *dpy;
+static Window root;
+static int screen;
 
 int
 main()
 {
-        /* initialization */
+        /* initialize Xorg interface */
+        dpy = XOpenDisplay(NULL);
+        if (!dpy)
+        {
+                fprintf(stderr, "fatal: unable to open display\n");
+                exit(2);
+        }
+        screen = DefaultScreen(dpy);
+        root = RootWindow(dpy, screen);
+        signal(SIGINT, sigh);
+        signal(SIGTERM, sigh);
+
+        /* initialize for main loop */
 #ifdef GET_VOLUME
         init_alsa();
 #endif
@@ -52,9 +72,7 @@ main()
                         sprintf(buf, "%s", net);
                         free(net);
                         if (rx || tx)
-                        {
                                 delimiter();
-                        }
                 }
 
                 /* get mpd status */
@@ -113,6 +131,8 @@ main()
 
                 /* wait for next iteration */
                 printf("%s\n", buf);
+                XStoreName(dpy, root, buf);
+                XFlush(dpy);
                 free(buf);
                 fflush(stdout);
                 usleep(INTERVAL);
@@ -121,6 +141,7 @@ main()
 #endif
         }
 
+        XCloseDisplay(dpy);
         return 0;
 }
 
@@ -152,4 +173,15 @@ datePP()
         strftime(timestr, TIMELENGTH, TIMEFMT, now);
 
         return timestr;
+}
+
+/**
+ * sigh
+ * handle signals sent to this process
+ */
+void sigh(int sig)
+{
+    fprintf(stderr, "Signal %d, exiting...\n", sig);
+    XCloseDisplay(dpy);
+    exit(1);
 }

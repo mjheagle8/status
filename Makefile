@@ -3,7 +3,7 @@ OUT 	= status
 #variables
 CC = gcc
 CFLAGS = -Wall -g -Wextra -O2
-LDFLAGS = -lasound -lmpdclient
+LDFLAGS = -lasound -lmpdclient -lX11
 
 SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
