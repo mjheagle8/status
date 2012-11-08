@@ -72,7 +72,9 @@ main()
                         sprintf(buf, "%s", net);
                         free(net);
                         if (rx || tx)
+                        {
                                 delimiter();
+                        }
                 }
 
                 /* get mpd status */
