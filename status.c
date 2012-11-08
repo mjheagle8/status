@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include "config.h"
@@ -21,7 +22,7 @@
 #ifdef USE_DZEN
 #define delimiter()
 #else
-#define delimiter() printf(":: ")
+#define delimiter() strcat(buf, ":: ")
 #endif
 
 /* function prototypes */
@@ -38,13 +39,17 @@ main()
         /* main loop */
         while (1)
         {
+                /* allocate buffers */
+                char *buf = calloc(1024, sizeof(char));
+                char *tmp;
+
                 /* get network status */
                 if (if_up())
                 {
                         const unsigned long long int tx = transmit_bytes();
                         const unsigned long long int rx = download_bytes();
                         char *net = print_data_rates(rx, tx);
-                        printf("%s", net);
+                        sprintf(buf, "%s", net);
                         free(net);
                         if (rx || tx)
                         {
@@ -55,7 +60,7 @@ main()
                 /* get mpd status */
 #ifdef MPD_HOST
                 char *mpd = mpd_status();
-                printf("%s", mpd);
+                strcat(buf, mpd);
                 free(mpd);
                 delimiter();
 #endif
@@ -68,9 +73,12 @@ main()
                 dzen_color(DZEN_FG, NULL);
                 printf(" ");
 #else
-                printf("vol:");
+                strcat(buf, "vol:");
 #endif
-                printf("%d%% ", getvolume());
+                tmp = calloc(16, sizeof(char));
+                snprintf(tmp, 16, "%d%% ", getvolume());
+                strcat(buf, tmp);
+                free(tmp);
                 delimiter();
 #endif
 
@@ -79,32 +87,33 @@ main()
                 if (cpuperc(perc))
                 {
                         char *cpu = cpuPP(perc, cpufreq());
-                        printf("%s", cpu);
+                        strcat(buf, cpu);
                         free(cpu);
                         delimiter();
                 }
 
                 /* get memory */
                 char *mem = memPP(memused());
-                printf("%s", mem);
+                strcat(buf, mem);
                 free(mem);
                 delimiter();
 
                 /* get battery */
 #ifdef GET_BATTERY
                 char *bat = batteryPP();
-                printf("%s", bat);
+                strcat(buf, bat);
                 free(bat);
                 delimiter();
 #endif
 
                 /* print date */
                 char *date = datePP();
-                printf(date);
+                strcat(buf, date);
                 free(date);
 
                 /* wait for next iteration */
-                printf("\n");
+                printf("%s\n", buf);
+                free(buf);
                 fflush(stdout);
                 usleep(INTERVAL);
 #ifdef GET_VOLUME
