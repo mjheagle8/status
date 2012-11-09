@@ -28,14 +28,20 @@
 /* status outputs */
 #define USE_DWM
 
-/* field prefixes */
-enum {P_MPD = 0, P_NET_UP, P_NET_DN, P_VOL, P_MEM, P_BAT, P_DATE};
+/* field headers */
+enum {P_MPD = 0, P_CPU, P_NET_UP, P_NET_DN, P_VOL, P_MEM, P_BAT, P_AC, P_DATE};
 
 #ifdef _STATUS_MAIN
-const char *field_prefixes[] =
+const char *fields[] =
 {
-        [P_MPD] = "mpd: ",
+        [P_MPD]  = " ",
+        [P_DATE] = " ",
+        [P_MEM]  = " ",
+        [P_VOL]  = " ",
+        [P_CPU]  = " ",
+        [P_BAT]  = " ",
+        [P_AC]   = " ",
 };
-#endif
-
+#else
+extern const char *fields[];
 #endif
