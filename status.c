@@ -16,6 +16,7 @@
 #undef _STATUS_MAIN
 #include "alsa.h"
 #include "battery.h"
+#include "color.h"
 #include "cpu.h"
 #include "dzen.h"
 #include "mem.h"
@@ -86,7 +87,9 @@ main()
 
                 /* get mpd status */
 #ifdef MPD_HOST
+                append_color(2, buf);
                 append_field(P_MPD, buf);
+                append_color(1, buf);
                 char *mpd = mpd_status();
                 strcat(buf, mpd);
                 free(mpd);
@@ -96,12 +99,14 @@ main()
                 /* get volume */
 #ifdef GET_VOLUME
                 const int vol = getvolume();
+                append_color(2, buf);
                 if (vol>50)
                         append_field(P_VOL_HI, buf);
                 else if (vol>0)
                         append_field(P_VOL_LO, buf);
                 else
                         append_field(P_VOL_MUTE, buf);
+                append_color(1, buf);
                 tmp = calloc(16, sizeof(char));
                 snprintf(tmp, 16, "%d%% ", vol);
                 strcat(buf, tmp);
@@ -110,7 +115,9 @@ main()
 #endif
 
                 /* get cpu usage */
+                append_color(2, buf);
                 append_field(P_CPU, buf);
+                append_color(1, buf);
                 float perc[NCPUS];
                 if (cpuperc(perc))
                 {
@@ -121,7 +128,9 @@ main()
                 }
 
                 /* get memory */
+                append_color(2, buf);
                 append_field(P_MEM, buf);
+                append_color(1, buf);
                 char *mem = memPP(memused());
                 strcat(buf, mem);
                 free(mem);
@@ -136,7 +145,9 @@ main()
 #endif
 
                 /* print date */
+                append_color(2, buf);
                 append_field(P_DATE, buf);
+                append_color(1, buf);
                 char *date = datePP();
                 strcat(buf, date);
                 free(date);
