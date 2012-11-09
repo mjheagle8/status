@@ -11,7 +11,9 @@
 #include <time.h>
 #include <unistd.h>
 #include <X11/Xlib.h>
+#define _STATUS_MAIN
 #include "config.h"
+#undef _STATUS_MAIN
 #include "alsa.h"
 #include "battery.h"
 #include "cpu.h"
@@ -30,6 +32,7 @@
 /* function prototypes */
 char *datePP();
 void sigh(int);
+void append_field(int, char *);
 
 /* global variables */
 #ifdef USE_DWM
@@ -83,6 +86,7 @@ main()
 
                 /* get mpd status */
 #ifdef MPD_HOST
+                append_field(P_MPD, buf);
                 char *mpd = mpd_status();
                 strcat(buf, mpd);
                 free(mpd);
@@ -136,10 +140,11 @@ main()
                 free(date);
 
                 /* wait for next iteration */
-                printf("%s\n", buf);
 #ifdef USE_DWM
                 XStoreName(dpy, root, buf);
                 XFlush(dpy);
+#else
+                printf("%s\n", buf);
 #endif
                 free(buf);
                 fflush(stdout);
@@ -194,4 +199,14 @@ void sigh(int sig)
     XCloseDisplay(dpy);
 #endif
     exit(1);
+}
+
+/**
+ * append prefix
+ * write a field prefix into the buffer
+ */
+void append_field(int field, char *buf)
+{
+        if (fields[field])
+                strcat(buf, fields[field]);
 }

@@ -74,12 +74,12 @@ mpd_status()
                 song = mpd_run_current_song(connection);
                 const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
                 const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
-                snprintf(buf, 256, "MPD: %s %s - %s ", state, artist, title);
+                snprintf(buf, 256, "%s %s - %s ", state, artist, title);
                 free(state);
                 mpd_song_free(song);
         }
         else
-                snprintf(buf, 256, "MPD: %s", state);
+                snprintf(buf, 256, "%s", state);
 
         return buf;
 }
