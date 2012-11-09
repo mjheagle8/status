@@ -64,7 +64,7 @@ memPP (const int mem)
         else if (mem<1024*1024)
                 snprintf(buf, buflen, "%.1fM ", (float)mem / 1024);
         else
-                snprintf(buf, buflen, "%.1fG ", (float)mem / (1024*1024));
+                snprintf(buf, buflen, "%.2fG ", (float)mem / (1024*1024));
 
         return buf;
 }
