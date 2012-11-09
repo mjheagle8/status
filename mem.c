@@ -56,7 +56,7 @@ memused()
 char *
 memPP (const int mem)
 {
-        const int buflen = 8;
+        const int buflen = 10;
         char *buf = calloc(buflen, sizeof(char));
 
         if (mem<1024)
