@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "battery.h"
 #include "config.h"
 #include "dzen.h"
@@ -40,9 +41,17 @@ batteryPP()
         if (!status)
                 return NULL;
 
-        buf = calloc(10, sizeof(char));
-        snprintf(buf, 3, "%c ", status);
-        snprintf(buf+2, 7, "%.1f%% ", pct);
+        buf = calloc(16, sizeof(char));
+        if (fields[P_BAT] && status == 'D')
+                strcat(buf, fields[P_BAT]);
+        else if (fields[P_AC] && status == 'C')
+                strcat(buf, fields[P_AC]);
+        else
+                snprintf(buf, 3, "%c ", status);
+        char *tmp = calloc(10, sizeof(char));
+        snprintf(tmp, 10, "%.1f%% ", pct);
+        strcat(buf, tmp);
+        free(tmp);
 
         /* increment counter */
         counter++;
