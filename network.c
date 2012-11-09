@@ -88,7 +88,10 @@ print_data_rates(unsigned long long int rx, unsigned long long int tx)
         if (rx)
         {
                 char *tmp = NULL;
-                strcat(buf, "d:");
+                if (fields[P_NET_DN])
+                        strcat(buf, fields[P_NET_DN]);
+                else
+                        strcat(buf, "d:");
                 tmp = print_data_rate(rx);
                 strcat(buf, tmp);
                 strcat(buf, " ");
@@ -97,7 +100,10 @@ print_data_rates(unsigned long long int rx, unsigned long long int tx)
         if (tx)
         {
                 char *tmp = NULL;
-                strcat(buf, "u:");
+                if (fields[P_NET_UP])
+                        strcat(buf, fields[P_NET_UP]);
+                else
+                        strcat(buf, "u:");
                 tmp = print_data_rate(tx);
                 strcat(buf, tmp);
                 strcat(buf, " ");
