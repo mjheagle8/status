@@ -28,6 +28,6 @@ by mjheagle
 * battery
 * dwm
   - colors
-  - icons
+  * icons
 
 vim: et ts=2 sw=2 sts=2
