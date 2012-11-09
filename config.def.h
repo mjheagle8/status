@@ -29,14 +29,23 @@
 #define USE_DWM
 
 /* field headers */
-enum {P_MPD = 0, P_CPU, P_NET_UP, P_NET_DN, P_VOL_HI, P_VOL_LO, P_VOL_MUTE, P_MEM, P_BAT, P_AC, P_DATE};
+enum {P_MPD = 0, P_MPD_PLAY, P_MPD_PAUSE, P_MPD_STOP,
+        P_CPU,
+        P_NET_UP, P_NET_DN,
+        P_VOL_HI, P_VOL_LO, P_VOL_MUTE,
+        P_MEM,
+        P_BAT, P_AC,
+        P_DATE};
 
 #ifdef _STATUS_MAIN
 const char *fields[] =
 {
+        [P_MPD]       = " ",
+        [P_MPD_PLAY]  = "",
+        [P_MPD_PAUSE] = "",
+        [P_MPD_STOP]  = " ",
         [P_NET_UP]    = " ",
         [P_NET_DN]    = " ",
-        [P_MPD]       = " ",
         [P_DATE]      = " ",
         [P_MEM]       = " ",
         [P_VOL_LO]    = " ",
@@ -48,4 +57,5 @@ const char *fields[] =
 };
 #else
 extern const char *fields[];
+#endif
 #endif

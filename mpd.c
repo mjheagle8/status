@@ -51,19 +51,29 @@ mpd_status()
         enum mpd_state playstate = mpd_status_get_state(status);
         if (playstate == MPD_STATE_STOP)
         {
-                state = "stopped";
+                if (fields[P_MPD_STOP])
+                        state = (char *)fields[P_MPD_STOP];
+                else
+                        state = "stopped";
                 fetch_song = false;
         }
-        else if (playstate == MPD_STATE_PAUSE || playstate == MPD_STATE_PLAY)
+        else if (playstate == MPD_STATE_PAUSE)
         {
-                state = calloc(16, sizeof(char));
-                const int elapsed = mpd_status_get_elapsed_time(status);
-                const int total = mpd_status_get_total_time(status);
-                snprintf(state, 16, "%d:%02d/%d:%02d", elapsed/60, elapsed%60, total/60, total%60);
+                if (fields[P_MPD_PAUSE])
+                        state = (char *)fields[P_MPD_PAUSE];
+                else
+                        state = "paused:";
+        }
+        else if (playstate == MPD_STATE_PLAY)
+        {
+                if (fields[P_MPD_PLAY])
+                        state = (char *)fields[P_MPD_PLAY];
+                else
+                        state = "playing:";
         }
         else
         {
-                state = "state unknown";
+                state = "?";
                 fetch_song = false;
         }
         mpd_status_free(status);
@@ -75,7 +85,6 @@ mpd_status()
                 const char *title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
                 const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
                 snprintf(buf, 256, "%s %s - %s ", state, artist, title);
-                free(state);
                 mpd_song_free(song);
         }
         else
