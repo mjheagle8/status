@@ -95,9 +95,15 @@ main()
 
                 /* get volume */
 #ifdef GET_VOLUME
-                append_field(P_VOL, buf);
+                const int vol = getvolume();
+                if (vol>50)
+                        append_field(P_VOL_HI, buf);
+                else if (vol>0)
+                        append_field(P_VOL_LO, buf);
+                else
+                        append_field(P_VOL_MUTE, buf);
                 tmp = calloc(16, sizeof(char));
-                snprintf(tmp, 16, "%d%% ", getvolume());
+                snprintf(tmp, 16, "%d%% ", vol);
                 strcat(buf, tmp);
                 free(tmp);
                 delimiter();
