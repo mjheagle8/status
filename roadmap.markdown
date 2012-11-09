@@ -27,7 +27,7 @@ by mjheagle
   * print colors
 * battery
 * dwm
-  - colors
+  * colors
   * icons
 
 vim: et ts=2 sw=2 sts=2
