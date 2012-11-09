@@ -26,7 +26,7 @@
 #ifdef USE_DZEN
 #define delimiter()
 #else
-#define delimiter() strcat(buf, ":: ")
+#define delimiter()
 #endif
 
 /* function prototypes */
@@ -95,14 +95,7 @@ main()
 
                 /* get volume */
 #ifdef GET_VOLUME
-#ifdef USE_DZEN
-                dzen_color(DZEN_HIGHLIGHT, NULL);
-                dzen_icon("/usr/share/icons/stlarch_icons/vol4.xbm");
-                dzen_color(DZEN_FG, NULL);
-                printf(" ");
-#else
-                strcat(buf, "vol:");
-#endif
+                append_field(P_VOL, buf);
                 tmp = calloc(16, sizeof(char));
                 snprintf(tmp, 16, "%d%% ", getvolume());
                 strcat(buf, tmp);
@@ -111,6 +104,7 @@ main()
 #endif
 
                 /* get cpu usage */
+                append_field(P_CPU, buf);
                 float perc[NCPUS];
                 if (cpuperc(perc))
                 {
@@ -121,6 +115,7 @@ main()
                 }
 
                 /* get memory */
+                append_field(P_MEM, buf);
                 char *mem = memPP(memused());
                 strcat(buf, mem);
                 free(mem);
@@ -135,6 +130,7 @@ main()
 #endif
 
                 /* print date */
+                append_field(P_DATE, buf);
                 char *date = datePP();
                 strcat(buf, date);
                 free(date);
@@ -202,7 +198,7 @@ void sigh(int sig)
 }
 
 /**
- * append prefix
+ * append field
  * write a field prefix into the buffer
  */
 void append_field(int field, char *buf)
