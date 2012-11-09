@@ -21,3 +21,6 @@
 #define SOUNDCARD       "default"
 #define ALSAMIXER       "Master"
 #define GET_VOLUME
+
+/* status outputs */
+#define USE_DWM

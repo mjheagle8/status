@@ -32,14 +32,17 @@ char *datePP();
 void sigh(int);
 
 /* global variables */
+#ifdef USE_DWM
 static Display *dpy;
 static Window root;
 static int screen;
+#endif
 
 int
 main()
 {
         /* initialize Xorg interface */
+#ifdef USE_DWM
         dpy = XOpenDisplay(NULL);
         if (!dpy)
         {
@@ -48,6 +51,7 @@ main()
         }
         screen = DefaultScreen(dpy);
         root = RootWindow(dpy, screen);
+#endif
         signal(SIGINT, sigh);
         signal(SIGTERM, sigh);
 
@@ -133,8 +137,10 @@ main()
 
                 /* wait for next iteration */
                 printf("%s\n", buf);
+#ifdef USE_DWM
                 XStoreName(dpy, root, buf);
                 XFlush(dpy);
+#endif
                 free(buf);
                 fflush(stdout);
                 usleep(INTERVAL);
@@ -184,6 +190,8 @@ datePP()
 void sigh(int sig)
 {
     fprintf(stderr, "Signal %d, exiting...\n", sig);
+#ifdef USE_DWM
     XCloseDisplay(dpy);
+#endif
     exit(1);
 }
