@@ -42,7 +42,7 @@ mpd_status()
                 /* if reconnection failed, error out */
                 if (!status)
                 {
-                        strncat(buf+5, "connection failed", 249);
+                        strncat(buf, "no connection ", 249);
                         return buf;
                 }
         }
