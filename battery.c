@@ -6,8 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "battery.h"
 #include "config.h"
+#include "battery.h"
+#include "color.h"
 #include "dzen.h"
 
 /* local functions */
@@ -41,13 +42,15 @@ batteryPP()
         if (!status)
                 return NULL;
 
-        buf = calloc(16, sizeof(char));
+        buf = calloc(32, sizeof(char));
+        append_color(2, buf);
         if (fields[P_BAT] && status == 'D')
                 strcat(buf, fields[P_BAT]);
         else if (fields[P_AC] && status == 'C')
                 strcat(buf, fields[P_AC]);
         else
                 snprintf(buf, 3, "%c ", status);
+        append_color(1, buf);
         char *tmp = calloc(10, sizeof(char));
         snprintf(tmp, 10, "%.1f%% ", pct);
         strcat(buf, tmp);
