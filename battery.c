@@ -50,7 +50,11 @@ batteryPP()
                 strcat(buf, fields[P_AC]);
         else
                 snprintf(buf, 3, "%c ", status);
-        append_color(1, buf);
+
+        if (pct>25)
+                append_color(1, buf);
+        else
+                append_color(3, buf);
         char *tmp = calloc(10, sizeof(char));
         snprintf(tmp, 10, "%.1f%% ", pct);
         strcat(buf, tmp);
