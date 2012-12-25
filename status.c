@@ -41,6 +41,7 @@ static Display *dpy;
 static Window root;
 static int screen;
 #endif
+time_t curtime = 1;
 
 int
 main()
@@ -193,6 +194,7 @@ datePP()
         /* get current time */
         time(&cur);
         now = localtime(&cur);
+        curtime = mktime(now);
 
         /* convert thte time to a formatted string */
         timestr = malloc(TIMELENGTH*sizeof(char));
