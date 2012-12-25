@@ -41,7 +41,7 @@
 /* field headers */
 enum {P_MPD = 0, P_MPD_PLAY, P_MPD_PAUSE, P_MPD_STOP,
         P_CPU,
-        P_NET_UP, P_NET_DN,
+        P_NET, P_NET_UP, P_NET_DN,
         P_VOL_HI, P_VOL_LO, P_VOL_MUTE,
         P_MEM,
         P_BAT, P_AC,
@@ -54,6 +54,7 @@ const char *fields[] =
         [P_MPD_PLAY]  = "",
         [P_MPD_PAUSE] = "",
         [P_MPD_STOP]  = " ",
+        [P_NET]       = " ",
         [P_NET_UP]    = " ",
         [P_NET_DN]    = " ",
         [P_DATE]      = " ",

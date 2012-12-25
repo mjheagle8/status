@@ -75,10 +75,14 @@ main()
                 /* get network status */
                 if (if_up())
                 {
+                        append_color(2, buf);
+                        append_field(P_NET, buf);
+                        append_color(1, buf);
+
                         const unsigned long long int tx = transmit_bytes();
                         const unsigned long long int rx = download_bytes();
                         char *net = print_data_rates(rx, tx);
-                        sprintf(buf, "%s", net);
+                        strcat(buf, net);
                         free(net);
                         if (rx || tx)
                         {
