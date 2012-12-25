@@ -25,6 +25,16 @@
 #define ALSAMIXER       "Master"
 #define GET_VOLUME
 
+/* mpd */
+#define MPD_HOST        "localhost"
+#define MPD_PORT        6600
+#define MPD_TIMEOUT     1000
+
+/* battery */
+#define GET_BATTERY
+#define BATTERY         "BAT0"
+#define BATTERY_INT     30              /* interval for fetching power status */
+
 /* status outputs */
 #define USE_DWM
 
