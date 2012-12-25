@@ -16,6 +16,9 @@ static float read_float_file(const char *);
 static char charge_status();
 static float charge_pct();
 
+/* global variables */
+extern time_t curtime;
+
 /**
  * batteryPP
  * get the battery status
@@ -25,15 +28,13 @@ char *
 batteryPP()
 {
         /* initial declarations */
-        static short counter = 0;
         static char status = -1;
         static float pct = -1;
         char *buf;
 
         /* check whether we should recompute values this time */
-        if (counter == BATTERY_INT || status < 0)
+        if ((curtime % BATTERY_INT) == 0 || status < 0)
         {
-                counter = 0;
                 status = charge_status();
                 pct = charge_pct();
         }
@@ -59,9 +60,6 @@ batteryPP()
         snprintf(tmp, 10, "%.1f%% ", pct);
         strcat(buf, tmp);
         free(tmp);
-
-        /* increment counter */
-        counter++;
 
         return buf;
 }
