@@ -22,6 +22,7 @@
 #include "mem.h"
 #include "mpd.h"
 #include "network.h"
+#include "time.h"
 
 /* macros */
 #ifdef USE_DZEN
@@ -31,7 +32,6 @@
 #endif
 
 /* function prototypes */
-char *datePP();
 void sigh(int);
 void append_field(int, char *);
 
@@ -41,7 +41,6 @@ static Display *dpy;
 static Window root;
 static int screen;
 #endif
-time_t curtime = 1;
 
 int
 main()
@@ -176,36 +175,6 @@ main()
         return 0;
 }
 
-/**
- * datePP
- * get the current date
- * and print it using strftime
- */
-char *
-datePP()
-{
-        struct tm *now;
-        time_t cur;
-        char *timestr;
-
-#ifdef USE_DZEN
-        dzen_color(DZEN_HIGHLIGHT, NULL);
-        dzen_icon("/usr/share/icons/stlarch_icons/clock2.xbm");
-        dzen_color(DZEN_FG, NULL);
-        printf(" ");
-#endif
-
-        /* get current time */
-        time(&cur);
-        now = localtime(&cur);
-        curtime = mktime(now);
-
-        /* convert thte time to a formatted string */
-        timestr = malloc(TIMELENGTH*sizeof(char));
-        strftime(timestr, TIMELENGTH, TIMEFMT, now);
-
-        return timestr;
-}
 
 /**
  * sigh
