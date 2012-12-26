@@ -17,8 +17,7 @@ time_t curtime = 1;
  * get the current date
  * and print it using strftime
  */
-char *
-datePP()
+char *datePP()
 {
         struct tm *now;
         time_t cur;
@@ -47,8 +46,7 @@ datePP()
  * lsleep
  * wait until the next iteration
  */
-void
-lsleep()
+void lsleep()
 {
         struct timespec tm;
         clock_gettime(CLOCK_REALTIME, &tm);

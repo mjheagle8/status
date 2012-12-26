@@ -167,7 +167,7 @@ main()
                 fflush(stdout);
                 lsleep();
 #ifdef GET_VOLUME
-                alsa_refresh(INTERVAL/1000);
+                alsa_refresh();
 #endif
         }
 
