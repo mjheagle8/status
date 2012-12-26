@@ -42,3 +42,16 @@ datePP()
 
         return timestr;
 }
+
+/**
+ * lsleep
+ * wait until the next iteration
+ */
+void
+lsleep()
+{
+        struct timespec tm;
+        clock_gettime(CLOCK_REALTIME, &tm);
+        const int sleeptime = ((INTERVAL*1000)-tm.tv_nsec)/1000;
+        usleep(sleeptime);
+}

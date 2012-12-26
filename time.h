@@ -7,5 +7,6 @@
 #define _CONFIG_TIME_H
 
 char *datePP();
+void lsleep();
 
 #endif

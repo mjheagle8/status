@@ -165,7 +165,7 @@ main()
 #endif
                 free(buf);
                 fflush(stdout);
-                usleep(INTERVAL);
+                lsleep();
 #ifdef GET_VOLUME
                 alsa_refresh(INTERVAL/1000);
 #endif
