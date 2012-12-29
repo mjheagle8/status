@@ -165,10 +165,12 @@ cpuPP(const float *stat, unsigned int freq)
                 char *format;
                 if (i>0)
                         strncat(buf, "/", 1);
-                if (stat[i]<100)
+                if (stat[i]<10)
+                        format = "0%0.1f%%";
+                else if (stat[i]<100)
                         format = "%0.1f%%";
                 else
-                        format = "%0.0f%%";
+                        format = "%0.0f.%%";
 
                 char *tmp = calloc(8, sizeof(char));
                 snprintf(tmp, 8, format, stat[i]);
