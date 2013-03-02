@@ -16,6 +16,7 @@
 #undef _STATUS_MAIN
 #include "alsa.h"
 #include "battery.h"
+#include "checkmail.h"
 #include "color.h"
 #include "cpu.h"
 #include "dzen.h"
@@ -64,6 +65,7 @@ main()
 #ifdef GET_VOLUME
         init_alsa();
 #endif
+        char *mails = NULL;
 
         /* main loop */
         while (1)
@@ -71,6 +73,7 @@ main()
                 /* allocate buffers */
                 char *buf = calloc(1024, sizeof(char));
                 char *tmp;
+
 
                 /* get network status */
                 if (if_up())
@@ -86,6 +89,10 @@ main()
 #endif
                         strcat(buf, essid);
                         strcat(buf, " ");
+
+#ifdef MAILDIR
+                        mails = mailcount(MAILDIR);
+#endif
                         free(essid);
 
                         const unsigned long long int tx = transmit_bytes();
@@ -109,6 +116,14 @@ main()
                 free(mpd);
                 delimiter();
 #endif
+
+                /* print mails */
+                if (mails != NULL) {
+                        append_color(2, buf);
+                        append_field(P_MAIL, buf);
+                        append_color(1, buf);
+                        strcat(buf, mails);
+                }
 
                 /* get volume */
 #ifdef GET_VOLUME

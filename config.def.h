@@ -35,11 +35,16 @@
 #define BATTERY         "BAT0"
 #define BATTERY_INT     30              /* interval for fetching power status */
 
+/* mail directory */
+#define MAILDIR         "/mnt/develop/mail/gmail"
+#define MAIL_INT        60
+
 /* status outputs */
 #define USE_DWM
 
 /* field headers */
 enum {P_MPD = 0, P_MPD_PLAY, P_MPD_PAUSE, P_MPD_STOP,
+        P_MAIL,
         P_CPU,
         P_NET, P_NET_UP, P_NET_DN,
         P_VOL_HI, P_VOL_LO, P_VOL_MUTE,
@@ -50,6 +55,7 @@ enum {P_MPD = 0, P_MPD_PLAY, P_MPD_PAUSE, P_MPD_STOP,
 #ifdef _STATUS_MAIN
 const char *fields[] =
 {
+        [P_MAIL]      = " ",
         [P_MPD]       = " ",
         [P_MPD_PLAY]  = "",
         [P_MPD_PAUSE] = "",
