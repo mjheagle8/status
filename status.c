@@ -23,6 +23,7 @@
 #include "mpd.h"
 #include "network.h"
 #include "time.h"
+#include "wifi.h"
 
 /* macros */
 #ifdef USE_DZEN
@@ -77,6 +78,15 @@ main()
                         append_color(2, buf);
                         append_field(P_NET, buf);
                         append_color(1, buf);
+
+#ifdef NIC
+                        char *essid = get_dev_essid(-1, NIC);
+#else
+                        char *essid = get_essid();
+#endif
+                        strcat(buf, essid);
+                        strcat(buf, " ");
+                        free(essid);
 
                         const unsigned long long int tx = transmit_bytes();
                         const unsigned long long int rx = download_bytes();
